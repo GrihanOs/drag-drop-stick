@@ -15,14 +15,21 @@
 		.moved {
 			width: 300px;
 			height: 100px;
-			background-color: lightcoral;
-			border: 1px solid coral;
 			position: absolute;
 		}
 
 		#moved-1 {
 			left: 600px;
 			top: 600px;
+			background-color: lightcoral;
+			border: 1px solid coral;
+		}
+
+		#moved-2 {
+			left: 1000px;
+			top: 200px;
+			background-color: lightskyblue;
+			border: 1px solid skyblue;
 		}
 	</style>
 	<script>
@@ -41,6 +48,8 @@
 
 		let horizontalMove = false;
 		let horizontalMoveDiff = 0;
+
+		let activeDiv;
 
 		function initialize() {
 
@@ -62,7 +71,9 @@
 
 			});
 
-			requestAnimationFrame(doMove)
+			activeDiv = document.getElementById("moved-1");
+
+			requestAnimationFrame(doMove);
 		}
 
 		function moveStart(directionKey) {
@@ -118,17 +129,21 @@
 
 			if (verticalMove || horizontalMove) {
 
-				const moved1 = document.getElementById("moved-1");
-				const clientRect = moved1.getBoundingClientRect();
+				const clientRect = activeDiv.getBoundingClientRect();
 
 				const newLeft = clientRect.left + horizontalMoveDiff * SPEED;
 				const newTop = clientRect.top + verticalMoveDiff * SPEED;
 
-				moved1.style.left = `${newLeft}px`;
-				moved1.style.top = `${newTop}px`;
+				activeDiv.style.left = `${newLeft}px`;
+				activeDiv.style.top = `${newTop}px`;
 			}
 
 			requestAnimationFrame(doMove);
+		}
+
+		function changeSelection(radioButton) {
+			activeDiv = radioButton.parentElement;
+			radioButton.blur();
 		}
 
 	</script>
@@ -136,7 +151,30 @@
 
 <body onload="initialize()">
 	<div class="container">
-		<div class="moved" id="moved-1">
+		<div
+			class="moved"
+			id="moved-1"
+		>
+			<input
+				type="radio"
+				id="moved-1-select"
+				name="div-select"
+				value="moved-1"
+				onchange="changeSelection(this)"
+				checked="true"
+			/>
+		</div>
+		<div
+			class="moved"
+			id="moved-2"
+		>
+			<input
+				type="radio"
+				id="moved-2-select"
+				name="div-select"
+				value="moved-2"
+				onchange="changeSelection(this)"
+			/>
 		</div>
 	</div>
 </body>
