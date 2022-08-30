@@ -1,3 +1,5 @@
+import { DivWrapper } from "./divWrapper.js";
+
 const directionKeys = {
     UP: "ArrowUp",
     DOWN: "ArrowDown",
@@ -38,6 +40,10 @@ function initialize() {
         }
 
     });
+
+    document.querySelectorAll(".movable-div input").forEach((divSelector)=>{
+        divSelector.addEventListener("change", changeSelection);
+    })
 
     activeDiv = document.getElementById("moved-1");
 }
@@ -115,7 +121,12 @@ function doMove() {
     }
 }
 
-function changeSelection(radioButton) {
+function changeSelection(event) {
+    const radioButton = event.srcElement;
     activeDiv = radioButton.parentElement;
     radioButton.blur();
 }
+
+window.addEventListener("load", initialize);
+
+// export default initialize;
