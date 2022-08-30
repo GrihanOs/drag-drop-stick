@@ -40,8 +40,6 @@ function initialize() {
     });
 
     activeDiv = document.getElementById("moved-1");
-
-    requestAnimationFrame(doMove);
 }
 
 function moveStart(directionKey) {
@@ -72,9 +70,10 @@ function moveStart(directionKey) {
 
     }
 
-    // if (!animationRunning) {
-    // requestAnimationFrame(doMove);
-    // }
+    if (!animationRunning) {
+        requestAnimationFrame(doMove);
+        animationRunning = true;
+    }
 }
 
 function moveStop(directionKey) {
@@ -95,7 +94,7 @@ function moveStop(directionKey) {
 
     }
 
-    // animationRunning = false;
+    animationRunning = false;
 }
 
 function doMove() {
@@ -111,9 +110,9 @@ function doMove() {
         activeDiv.style.top = `${newTop}px`;
     }
 
-    // if (animationRunning) {
-    requestAnimationFrame(doMove);
-    // }
+    if (animationRunning) {
+        requestAnimationFrame(doMove);
+    }
 }
 
 function changeSelection(radioButton) {
