@@ -1,8 +1,8 @@
 const directionKeys = {
-    UP: 38,
-    DOWN: 40,
-    LEFT: 37,
-    RIGHT: 39,
+    UP: "ArrowUp",
+    DOWN: "ArrowDown",
+    LEFT: "ArrowLeft",
+    RIGHT: "ArrowRight",
 }
 
 const SPEED = 5;
@@ -15,22 +15,26 @@ let horizontalMoveDiff = 0;
 
 let activeDiv;
 
+let animationRunning = false;
+
+function isArrowKey(key) {
+    return (key.substring(0, 5) === "Arrow");
+}
+
 function initialize() {
 
     window.addEventListener("keydown", (keyEvent) => {
 
-        if (keyEvent.keyCode >= 37 &&
-            keyEvent.keyCode <= 40) {
-            moveStart(keyEvent.keyCode);
+        if (isArrowKey(keyEvent.key)) {
+            moveStart(keyEvent.key);
         }
 
     });
 
     window.addEventListener("keyup", (keyEvent) => {
 
-        if (keyEvent.keyCode >= 37 &&
-            keyEvent.keyCode <= 40) {
-            moveStop(keyEvent.keyCode);
+        if (isArrowKey(keyEvent.key)) {
+            moveStop(keyEvent.key);
         }
 
     });
@@ -67,6 +71,10 @@ function moveStart(directionKey) {
         }
 
     }
+
+    // if (!animationRunning) {
+    // requestAnimationFrame(doMove);
+    // }
 }
 
 function moveStop(directionKey) {
@@ -87,6 +95,7 @@ function moveStop(directionKey) {
 
     }
 
+    // animationRunning = false;
 }
 
 function doMove() {
@@ -102,7 +111,9 @@ function doMove() {
         activeDiv.style.top = `${newTop}px`;
     }
 
+    // if (animationRunning) {
     requestAnimationFrame(doMove);
+    // }
 }
 
 function changeSelection(radioButton) {
