@@ -23,6 +23,8 @@ function isArrowKey(key) {
     return (key.substring(0, 5) === "Arrow");
 }
 
+const divWrappers = [];
+
 function initialize() {
 
     window.addEventListener("keydown", (keyEvent) => {
@@ -40,6 +42,10 @@ function initialize() {
         }
 
     });
+	
+	document.querySelectorAll(".movable-div").forEach((div)=>{
+		divWrappers.push(new DivWrapper(div))
+    })
 
     document.querySelectorAll(".movable-div input").forEach((divSelector)=>{
         divSelector.addEventListener("change", changeSelection);
