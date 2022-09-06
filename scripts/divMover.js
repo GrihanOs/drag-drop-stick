@@ -7,16 +7,11 @@ const directionKeys = {
 	RIGHT: "ArrowRight",
 }
 
-const SPEED = 5;
-
 let verticalMove = false;
 let verticalMoveDiff = 0;
 
 let horizontalMove = false;
 let horizontalMoveDiff = 0;
-
-let activeDiv;
-let activeDivWrapper;
 
 let animationRunning = false;
 
@@ -46,14 +41,7 @@ function initialize() {
 
 	document.querySelectorAll(".movable-div").forEach((div) => {
 		divWrappers.push(new DivWrapper(div))
-	})
-
-	document.querySelectorAll(".movable-div input").forEach((divSelector) => {
-		divSelector.addEventListener("change", changeSelection);
-	})
-
-	activeDiv = document.getElementById("moved-1");
-	activeDivWrapper = divWrappers[0];
+	});
 }
 
 function moveStart(directionKey) {
@@ -115,21 +103,14 @@ function doMove() {
 
 	if (verticalMove || horizontalMove) {
 
-		activeDivWrapper.move(verticalMoveDiff, horizontalMoveDiff);
+		DivWrapper.activeDiv.move(verticalMoveDiff, horizontalMoveDiff);
 
-		activeDivWrapper.render();
+		DivWrapper.activeDiv.render();
 	}
 
 	if (animationRunning) {
 		requestAnimationFrame(doMove);
 	}
-}
-
-function changeSelection(event) {
-	const radioButton = event.srcElement;
-	activeDiv = radioButton.parentElement;
-	radioButton.blur();
-	activeDivWrapper = divWrappers.find((divWrapper) => divWrapper.id === activeDiv.id);
 }
 
 window.addEventListener("load", initialize);

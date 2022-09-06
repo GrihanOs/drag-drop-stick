@@ -2,6 +2,8 @@ const SPEED = 5;
 
 export class DivWrapper {
 
+	static activeDiv = null;
+
 	constructor(divReference) {
 
 		this.divReference = divReference;
@@ -12,13 +14,16 @@ export class DivWrapper {
 
 		this.divActivatedListener = this.divActivated.bind(this);
 		this.selectorInput.addEventListener("change", this.divActivatedListener);
+
+		DivWrapper.activeDiv = DivWrapper.activeDiv || this;
 	}
 
 	get id() {
 		return this.divReference.id;
 	}
 
-	divActivated(event) {
+	divActivated() {
+		DivWrapper.activeDiv = this;
 	}
 
 	move(verticalMoveDiff, horizontalMoveDiff) {
