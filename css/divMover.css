@@ -11,18 +11,23 @@
     width: 300px;
     height: 100px;
     position: absolute;
+	box-sizing: border-box;
 }
 
 #moved-1 {
     left: 600px;
     top: 600px;
     background-color: lightcoral;
-    border: 1px solid coral;
+    /* border: 1px solid coral; */
 }
 
 #moved-2 {
     left: 1000px;
     top: 200px;
     background-color: lightskyblue;
-    border: 1px solid skyblue;
+    /* border: 1px solid skyblue; */
+}
+
+.intersected-div {
+	border: 5px solid yellow;
 }
