@@ -1,11 +1,12 @@
 const SPEED = 5;
 
 export class DivWrapper {
+
 	constructor(divReference) {
 
 		this.divReference = divReference;
-		this.actualPos = this.divReference.getBoundingClientRect();
-		this.logicalPos = this.divReference.getBoundingClientRect();
+		this.actualPos = Object.assign({}, this.divReference.getBoundingClientRect());
+		this.logicalPos = Object.assign({}, this.divReference.getBoundingClientRect());
 
 		this.selectorInput = divReference.querySelector(".movable-div-selector");
 
@@ -13,11 +14,31 @@ export class DivWrapper {
 		this.selectorInput.addEventListener("change", this.divActivatedListener);
 	}
 
-	divActivated(event) {
-		console.log(this.divReference.id);
+	get id() {
+		return this.divReference.id;
 	}
 
-	move() {
+	divActivated(event) {
+	}
+
+	move(verticalMoveDiff, horizontalMoveDiff) {
+
+		const clientRect = this.divReference.getBoundingClientRect();
+
+		const newLeft = clientRect.left + horizontalMoveDiff * SPEED;
+		const newTop = clientRect.top + verticalMoveDiff * SPEED;
+
+		this.actualPos.left = newLeft;
+		this.actualPos.top = newTop;
+
+		this.logicalPos.left = newLeft;
+		this.logicalPos.top = newTop;
+	}
+
+	render() {
+
+		this.divReference.style.left = `${this.actualPos.left}px`;
+		this.divReference.style.top = `${this.actualPos.top}px`;
 
 	}
 }
