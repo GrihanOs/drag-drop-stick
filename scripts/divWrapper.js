@@ -1,5 +1,6 @@
 const SPEED = 2;
 const PROX_DISTANCE = 25;
+const SCREEN_BEZEL = 10;
 
 export class DivWrapper {
 
@@ -72,16 +73,18 @@ export class DivWrapper {
 
 	move(verticalMoveDiff, horizontalMoveDiff) {
 
-		// const clientRect = this.divReference.getBoundingClientRect();
-
 		const newLeft = this.logicalPos.left + horizontalMoveDiff * SPEED;
 		const newTop = this.logicalPos.top + verticalMoveDiff * SPEED;
 
-		this.logicalPos.left = newLeft;
-		this.logicalPos.top = newTop;
+		if (newLeft > SCREEN_BEZEL && newLeft + this.logicalPos.width < window.visualViewport.width - SCREEN_BEZEL) {
+			this.logicalPos.left = newLeft;
+			this.actualPos.left = newLeft;
+		}
 
-		this.actualPos.left = newLeft;
-		this.actualPos.top = newTop;
+		if (newTop > SCREEN_BEZEL && newTop + this.logicalPos.height < window.visualViewport.height - SCREEN_BEZEL) {
+			this.actualPos.top = newTop;
+			this.logicalPos.top = newTop;
+		}
 
 		this.proximityTest();
 
