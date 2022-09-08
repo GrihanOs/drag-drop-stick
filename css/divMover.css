@@ -31,3 +31,15 @@
 .proximity-div-top {
 	border-top: 5px solid yellow;
 }
+
+.proximity-div-bottom {
+	border-bottom: 5px solid yellow;
+}
+
+.proximity-div-left {
+	border-left: 5px solid yellow;
+}
+
+.proximity-div-right {
+	border-right: 5px solid yellow;
+}

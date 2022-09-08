@@ -1,4 +1,5 @@
-const SPEED = 5;
+const SPEED = 1;
+const PROX_DISTANCE = 100;
 
 export class DivWrapper {
 
@@ -77,8 +78,6 @@ export class DivWrapper {
 		this.actualPos.left = newLeft;
 		this.actualPos.top = newTop;
 
-		// this.intersectionTest();
-
 		this.proximityTest();
 
 		this.logicalPos.left = newLeft;
@@ -86,29 +85,42 @@ export class DivWrapper {
 
 	}
 
-	// intersectionTest() {
-
-	// 	this.intersects = false;
-
-	// 	DivWrapper.allDivWrappers.forEach((divWrapper) => {
-
-	// 		if (divWrapper.id !== this.id) {
-
-	// 			this.intersects = this.intersects ||
-	// 				(((this.top >= divWrapper.top && this.top <= divWrapper.bottom) ||
-	// 				  (divWrapper.top >= this.top && divWrapper.top <= this.bottom)) &&
-	// 				 ((this.left >= divWrapper.left && this.left <= divWrapper.right) ||
-	// 				  (divWrapper.left >= this.left && divWrapper.left <= this.right)));
-	// 		}
-	// 	})
-	// }
-
 	proximityTest() {
 
 		this.resetProximity();
 
+		DivWrapper.allDivWrappers.forEach((divWrapper) => {
 
+			if (divWrapper.id !== this.id) {
 
+				const intersectsHotizontal = ((this.left >= divWrapper.left && this.left <= divWrapper.right) || (divWrapper.left >= this.left && divWrapper.left <= this.right));
+				const intersectsVertical = ((this.top >= divWrapper.top && this.top <= divWrapper.bottom) || (divWrapper.top >= this.top && divWrapper.top <= this.bottom));
+
+				if (intersectsHotizontal) {
+
+					this.proximity.top = this.top - divWrapper.bottom > 0 && this.top - divWrapper.bottom <= PROX_DISTANCE;
+					this.proximity.bottom = divWrapper.top - this.bottom > 0 && divWrapper.top - this.bottom <= PROX_DISTANCE;
+
+				}
+
+				if (intersectsVertical) {
+
+					this.proximity.left = this.left - divWrapper.right > 0 && this.left - divWrapper.right <= PROX_DISTANCE;
+					this.proximity.right = divWrapper.left - this.right > 0 && divWrapper.left - this.right <= PROX_DISTANCE;
+
+				}
+
+			}
+		})
+
+	}
+
+	renderClass(test, className) {
+		if (test) {
+			this.divReference.classList.add(className);
+		} else {
+			this.divReference.classList.remove(className);
+		}
 	}
 
 	render() {
@@ -116,10 +128,9 @@ export class DivWrapper {
 		this.divReference.style.left = `${this.actualPos.left}px`;
 		this.divReference.style.top = `${this.actualPos.top}px`;
 
-		if (this.intersects) {
-			this.divReference.classList.add("intersected-div");
-		} else {
-			this.divReference.classList.remove("intersected-div");
-		}
+		this.renderClass(this.proximity.top, "proximity-div-top");
+		this.renderClass(this.proximity.bottom, "proximity-div-bottom");
+		this.renderClass(this.proximity.left, "proximity-div-left");
+		this.renderClass(this.proximity.right, "proximity-div-right");
 	}
 }
