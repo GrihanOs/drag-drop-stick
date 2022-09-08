@@ -23,6 +23,8 @@ export class DivWrapper {
 		this.divActivatedListener = this.divActivated.bind(this);
 		this.selectorInput.addEventListener("change", this.divActivatedListener);
 
+		this.resetProximity();
+
 		DivWrapper.activeDiv = DivWrapper.activeDiv || this;
 		DivWrapper.allDivWrappers.push(this);
 	}
@@ -47,8 +49,19 @@ export class DivWrapper {
 		return this.actualPos.left + this.actualPos.width;
 	}
 
+	resetProximity() {
+
+		this.proximity = {
+			top: false,
+			bottom: false,
+			left: false,
+			right: false,
+		}
+
+	}
+
 	divActivated() {
-		DivWrapper.activeDiv.intersects = false;
+		DivWrapper.resetProximity();
 		DivWrapper.activeDiv.render();
 		DivWrapper.activeDiv = this;
 		this.selectorInput.blur();
@@ -64,28 +77,37 @@ export class DivWrapper {
 		this.actualPos.left = newLeft;
 		this.actualPos.top = newTop;
 
-		this.intersectionTest();
+		// this.intersectionTest();
+
+		this.proximityTest();
 
 		this.logicalPos.left = newLeft;
 		this.logicalPos.top = newTop;
 
 	}
 
-	intersectionTest() {
+	// intersectionTest() {
 
-		this.intersects = false;
+	// 	this.intersects = false;
 
-		DivWrapper.allDivWrappers.forEach((divWrapper) => {
+	// 	DivWrapper.allDivWrappers.forEach((divWrapper) => {
 
-			if (divWrapper.id !== this.id) {
+	// 		if (divWrapper.id !== this.id) {
 
-				this.intersects = this.intersects ||
-					(((this.top >= divWrapper.top && this.top <= divWrapper.bottom) ||
-					  (divWrapper.top >= this.top && divWrapper.top <= this.bottom)) &&
-					 ((this.left >= divWrapper.left && this.left <= divWrapper.right) ||
-					  (divWrapper.left >= this.left && divWrapper.left <= this.right)));
-			}
-		})
+	// 			this.intersects = this.intersects ||
+	// 				(((this.top >= divWrapper.top && this.top <= divWrapper.bottom) ||
+	// 				  (divWrapper.top >= this.top && divWrapper.top <= this.bottom)) &&
+	// 				 ((this.left >= divWrapper.left && this.left <= divWrapper.right) ||
+	// 				  (divWrapper.left >= this.left && divWrapper.left <= this.right)));
+	// 		}
+	// 	})
+	// }
+
+	proximityTest() {
+
+		this.resetProximity();
+
+
 
 	}
 
