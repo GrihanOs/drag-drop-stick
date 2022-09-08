@@ -5,6 +5,7 @@ const SCREEN_BEZEL = 10;
 export class DivWrapper {
 
 	static activeDiv = null;
+	static draggedDiv = null;
 	static allDivWrappers = [];
 
 	constructor(divReference) {
@@ -24,6 +25,12 @@ export class DivWrapper {
 
 		this.divActivatedListener = this.divActivated.bind(this);
 		this.selectorInput.addEventListener("change", this.divActivatedListener);
+
+		this.draggingStartListener = this.draggingStart.bind(this);
+		this.divReference.addEventListener("mousedown", this.draggingStartListener);
+
+		this.draggingEndListener = this.draggingEnd.bind(this);
+		this.divReference.addEventListener("mouseup", this.draggingEndListener);
 
 		this.resetProximity();
 
@@ -69,6 +76,21 @@ export class DivWrapper {
 		DivWrapper.activeDiv.render();
 		DivWrapper.activeDiv = this;
 		this.selectorInput.blur();
+	}
+
+	draggingStart() {
+		DivWrapper.draggedDiv = this;
+		console.log(this.id + " start");
+	}
+
+	draggingEnd() {
+		if (DivWrapper.draggedDiv) {
+			// DivWrapper.draggedDiv.resetProximity();
+			// DivWrapper.draggedDiv.render();
+			DivWrapper.draggedDiv = null;
+
+			console.log(this.id + " end");
+		}
 	}
 
 	move(verticalMoveDiff, horizontalMoveDiff) {
