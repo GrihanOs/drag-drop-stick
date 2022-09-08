@@ -1,5 +1,5 @@
-const SPEED = 1;
-const PROX_DISTANCE = 100;
+const SPEED = 2;
+const PROX_DISTANCE = 25;
 
 export class DivWrapper {
 
@@ -57,6 +57,8 @@ export class DivWrapper {
 			bottom: false,
 			left: false,
 			right: false,
+			vertical: false,
+			horizontal: false,
 		}
 
 	}
@@ -70,18 +72,18 @@ export class DivWrapper {
 
 	move(verticalMoveDiff, horizontalMoveDiff) {
 
-		const clientRect = this.divReference.getBoundingClientRect();
+		// const clientRect = this.divReference.getBoundingClientRect();
 
-		const newLeft = clientRect.left + horizontalMoveDiff * SPEED;
-		const newTop = clientRect.top + verticalMoveDiff * SPEED;
+		const newLeft = this.logicalPos.left + horizontalMoveDiff * SPEED;
+		const newTop = this.logicalPos.top + verticalMoveDiff * SPEED;
+
+		this.logicalPos.left = newLeft;
+		this.logicalPos.top = newTop;
 
 		this.actualPos.left = newLeft;
 		this.actualPos.top = newTop;
 
 		this.proximityTest();
-
-		this.logicalPos.left = newLeft;
-		this.logicalPos.top = newTop;
 
 	}
 
@@ -89,25 +91,59 @@ export class DivWrapper {
 
 		this.resetProximity();
 
+		const logicalTop = this.logicalPos.top;
+		const logicalBottom = this.logicalPos.top + this.logicalPos.height;
+		const logicalLeft = this.logicalPos.left;
+		const logicalRight = this.logicalPos.left + this.logicalPos.width;
+
 		DivWrapper.allDivWrappers.forEach((divWrapper) => {
 
 			if (divWrapper.id !== this.id) {
 
-				const intersectsHotizontal = ((this.left >= divWrapper.left && this.left <= divWrapper.right) || (divWrapper.left >= this.left && divWrapper.left <= this.right));
-				const intersectsVertical = ((this.top >= divWrapper.top && this.top <= divWrapper.bottom) || (divWrapper.top >= this.top && divWrapper.top <= this.bottom));
+				const intersectsVertical = ((logicalTop >= divWrapper.top && logicalTop <= divWrapper.bottom) || (divWrapper.top >= logicalTop && divWrapper.top <= logicalBottom));
+				const intersectsHotizontal = ((logicalLeft >= divWrapper.left && logicalLeft <= divWrapper.right) || (divWrapper.left >= logicalLeft && divWrapper.left <= logicalRight));
 
 				if (intersectsHotizontal) {
 
-					this.proximity.top = this.proximity.top || this.top - divWrapper.bottom > 0 && this.top - divWrapper.bottom <= PROX_DISTANCE;
-					this.proximity.bottom = this.proximity.bottom || divWrapper.top - this.bottom > 0 && divWrapper.top - this.bottom <= PROX_DISTANCE;
+					if (!this.proximity.vertical) {
+						if (logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
+							this.proximity.top = true;
+							this.actualPos.top -= logicalTop - divWrapper.bottom;
+						}
+					}
+
+					if (!this.proximity.vertical) {
+						if (divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
+							this.proximity.bottom = true;
+							this.actualPos.top += divWrapper.top - logicalBottom;
+						}
+					}
+
+
+
+					this.proximity.top = this.proximity.top || logicalTop - divWrapper.bottom > 0 && logicalTop - divWrapper.bottom <= PROX_DISTANCE;
+					this.proximity.bottom = this.proximity.bottom || divWrapper.top - logicalBottom > 0 && divWrapper.top - logicalBottom <= PROX_DISTANCE;
 
 				}
 
 				if (intersectsVertical) {
 
-					this.proximity.left = this.proximity.left || this.left - divWrapper.right > 0 && this.left - divWrapper.right <= PROX_DISTANCE;
-					this.proximity.right = this.proximity.right || divWrapper.left - this.right > 0 && divWrapper.left - this.right <= PROX_DISTANCE;
+					this.proximity.left = this.proximity.left || logicalLeft - divWrapper.right > 0 && logicalLeft - divWrapper.right <= PROX_DISTANCE;
+					this.proximity.right = this.proximity.right || divWrapper.left - logicalRight > 0 && divWrapper.left - logicalRight <= PROX_DISTANCE;
 
+					if (!this.proximity.horizontal) {
+						if (logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
+							this.proximity.left = true;
+							this.actualPos.left -= logicalLeft - divWrapper.right;
+						}
+					}
+
+					if (!this.proximity.horizontal) {
+						if (divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
+							this.proximity.right = true;
+							this.actualPos.left += divWrapper.left - logicalRight;
+						}
+					}
 				}
 
 			}
