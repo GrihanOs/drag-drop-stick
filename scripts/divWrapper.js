@@ -98,15 +98,15 @@ export class DivWrapper {
 
 				if (intersectsHotizontal) {
 
-					this.proximity.top = this.top - divWrapper.bottom > 0 && this.top - divWrapper.bottom <= PROX_DISTANCE;
-					this.proximity.bottom = divWrapper.top - this.bottom > 0 && divWrapper.top - this.bottom <= PROX_DISTANCE;
+					this.proximity.top = this.proximity.top || this.top - divWrapper.bottom > 0 && this.top - divWrapper.bottom <= PROX_DISTANCE;
+					this.proximity.bottom = this.proximity.bottom || divWrapper.top - this.bottom > 0 && divWrapper.top - this.bottom <= PROX_DISTANCE;
 
 				}
 
 				if (intersectsVertical) {
 
-					this.proximity.left = this.left - divWrapper.right > 0 && this.left - divWrapper.right <= PROX_DISTANCE;
-					this.proximity.right = divWrapper.left - this.right > 0 && divWrapper.left - this.right <= PROX_DISTANCE;
+					this.proximity.left = this.proximity.left || this.left - divWrapper.right > 0 && this.left - divWrapper.right <= PROX_DISTANCE;
+					this.proximity.right = this.proximity.right || divWrapper.left - this.right > 0 && divWrapper.left - this.right <= PROX_DISTANCE;
 
 				}
 

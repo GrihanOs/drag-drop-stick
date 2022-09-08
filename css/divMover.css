@@ -18,14 +18,18 @@
     left: 600px;
     top: 600px;
     background-color: lightcoral;
-    /* border: 1px solid coral; */
 }
 
 #moved-2 {
     left: 1000px;
     top: 200px;
     background-color: lightskyblue;
-    /* border: 1px solid skyblue; */
+}
+
+#moved-3 {
+    left: 800px;
+    top: 850px;
+    background-color: plum;
 }
 
 .proximity-div-top {
