@@ -62,7 +62,7 @@ export class DivWrapper {
 	}
 
 	divActivated() {
-		DivWrapper.resetProximity();
+		DivWrapper.activeDiv.resetProximity();
 		DivWrapper.activeDiv.render();
 		DivWrapper.activeDiv = this;
 		this.selectorInput.blur();
