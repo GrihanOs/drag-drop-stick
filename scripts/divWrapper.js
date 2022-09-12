@@ -95,15 +95,13 @@ export class DivWrapper {
 		const newLeft = this.logicalPos.left + movementX;
 		const newTop = this.logicalPos.top + movementY;
 
-		if (newLeft > SCREEN_BEZEL && newLeft + this.logicalPos.width < window.visualViewport.width - SCREEN_BEZEL) {
-			this.logicalPos.left = newLeft;
-			this.actualPos.left = newLeft;
-		}
+		this.logicalPos.left = newLeft;
+		this.actualPos.left = newLeft;
 
-		if (newTop > SCREEN_BEZEL && newTop + this.logicalPos.height < window.visualViewport.height - SCREEN_BEZEL) {
-			this.actualPos.top = newTop;
-			this.logicalPos.top = newTop;
-		}
+		this.actualPos.top = newTop;
+		this.logicalPos.top = newTop;
+
+		this.draggingBezelTest();
 
 		this.proximityTest();
 	}
@@ -123,7 +121,24 @@ export class DivWrapper {
 			this.logicalPos.top = newTop;
 		}
 
+
 		this.proximityTest();
+	}
+
+	draggingBezelTest() {
+
+		if (this.actualPos.top < SCREEN_BEZEL) {
+			this.actualPos.top = SCREEN_BEZEL;
+		} else if (this.actualPos.top + this.logicalPos.height > window.visualViewport.height - SCREEN_BEZEL) {
+			this.actualPos.top = window.visualViewport.height - SCREEN_BEZEL - this.logicalPos.height;
+		}
+
+		if (this.actualPos.left < SCREEN_BEZEL) {
+			this.actualPos.left = SCREEN_BEZEL;
+		} else if (this.actualPos.left + this.logicalPos.width > window.visualViewport.width - SCREEN_BEZEL) {
+			this.actualPos.left = window.visualViewport.width - SCREEN_BEZEL - this.logicalPos.width;
+		}
+
 	}
 
 	proximityTest() {
