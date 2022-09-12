@@ -150,13 +150,11 @@ function draggingStop() {
 	if (DivWrapper.draggedDiv) {
 		DivWrapper.draggedDiv.draggingEnd();
 	}
-	console.log("stop");
 }
 function draggingMove(mouseEvent) {
 
 
 	if (DivWrapper.draggedDiv) {
-		console.log(mouseEvent.movementY, mouseEvent.movementX, mouseAnimationRunning);
 		DivWrapper.draggedDiv.draggingMove(mouseEvent.movementY, mouseEvent.movementX);
 	}
 }
