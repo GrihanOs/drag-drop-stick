@@ -6,15 +6,25 @@
 		rel="stylesheet"
 		href="./css/divMover.css"
 	/>
-	<script type="module" src="./scripts/divMover.js">
+	<script
+		type="module"
+		src="./scripts/divMover.js"
+	>
 	</script>
 </head>
 
-<body>
-	<div class="container">
+<body
+	ondragstart="return false;"
+	ondrop="return false;"
+>
+	<div
+		class="container"
+		draggable="false"
+	>
 		<div
 			class="movable-div"
 			id="moved-1"
+			draggable="false"
 		>
 			<input
 				type="radio"
@@ -23,11 +33,13 @@
 				value="moved-1"
 				checked="true"
 				class="movable-div-selector"
+				draggable="false"
 			/>
 		</div>
 		<div
 			class="movable-div"
 			id="moved-2"
+			draggable="false"
 		>
 			<input
 				type="radio"
@@ -35,11 +47,13 @@
 				name="div-select"
 				value="moved-2"
 				class="movable-div-selector"
+				draggable="false"
 			/>
 		</div>
 		<div
 			class="movable-div"
 			id="moved-3"
+			draggable="false"
 		>
 			<input
 				type="radio"
@@ -47,9 +61,10 @@
 				name="div-select"
 				value="moved-3"
 				class="movable-div-selector"
+				draggable="false"
 			/>
 		</div>
 	</div>
-	</body>
+</body>
 
 </html>

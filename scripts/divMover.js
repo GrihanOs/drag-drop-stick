@@ -16,6 +16,7 @@ let horizontalMove = false;
 let horizontalMoveDiff = 0;
 
 let animationRunning = false;
+let mouseAnimationRunning = false;
 
 function isArrowKey(key) {
 	return (key.substring(0, 5) === "Arrow");
@@ -41,8 +42,24 @@ function initialize() {
 
 	});
 
+	window.addEventListener("mousedown", () => {
+		draggingStart()
+	});
+
+	window.addEventListener("mouseup", () => {
+		draggingStop();
+	});
+
+	window.addEventListener("mousemove", (mouseEvent) => {
+		draggingMove(mouseEvent);
+	});
+
+	window.addEventListener("dragstart", () => {
+		return (false);
+	});
+
 	document.querySelectorAll(".movable-div").forEach((div) => {
-		divWrappers.push(new DivWrapper(div))
+		divWrappers.push(new DivWrapper(div));
 	});
 }
 
@@ -60,7 +77,6 @@ function moveStart(directionKey) {
 		} else {
 			verticalMoveDiff = 1;
 		}
-
 	}
 
 	if (directionKey === directionKeys.LEFT ||
@@ -73,7 +89,6 @@ function moveStart(directionKey) {
 		} else {
 			horizontalMoveDiff = 1;
 		}
-
 	}
 
 	if (!animationRunning) {
@@ -116,8 +131,33 @@ function doMove() {
 		DivWrapper.activeDiv.render();
 	}
 
-	if (animationRunning) {
+	if (DivWrapper.draggedDiv) {
+		DivWrapper.draggedDiv.render();
+	}
+
+	if (animationRunning || mouseAnimationRunning) {
 		requestAnimationFrame(doMove);
+	}
+}
+
+function draggingStart() {
+	mouseAnimationRunning = true;
+	requestAnimationFrame(doMove);
+}
+
+function draggingStop() {
+	mouseAnimationRunning = false;
+	if (DivWrapper.draggedDiv) {
+		DivWrapper.draggedDiv.draggingEnd();
+	}
+	console.log("stop");
+}
+function draggingMove(mouseEvent) {
+
+
+	if (DivWrapper.draggedDiv) {
+		console.log(mouseEvent.movementY, mouseEvent.movementX, mouseAnimationRunning);
+		DivWrapper.draggedDiv.draggingMove(mouseEvent.movementY, mouseEvent.movementX);
 	}
 }
 

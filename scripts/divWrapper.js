@@ -80,17 +80,32 @@ export class DivWrapper {
 
 	draggingStart() {
 		DivWrapper.draggedDiv = this;
-		console.log(this.id + " start");
 	}
 
 	draggingEnd() {
 		if (DivWrapper.draggedDiv) {
-			// DivWrapper.draggedDiv.resetProximity();
-			// DivWrapper.draggedDiv.render();
+			DivWrapper.draggedDiv.resetProximity();
+			DivWrapper.draggedDiv.render();
 			DivWrapper.draggedDiv = null;
-
-			console.log(this.id + " end");
 		}
+	}
+
+	draggingMove(movementY, movementX) {
+
+		const newLeft = this.logicalPos.left + movementX;
+		const newTop = this.logicalPos.top + movementY;
+
+		if (newLeft > SCREEN_BEZEL && newLeft + this.logicalPos.width < window.visualViewport.width - SCREEN_BEZEL) {
+			this.logicalPos.left = newLeft;
+			this.actualPos.left = newLeft;
+		}
+
+		if (newTop > SCREEN_BEZEL && newTop + this.logicalPos.height < window.visualViewport.height - SCREEN_BEZEL) {
+			this.actualPos.top = newTop;
+			this.logicalPos.top = newTop;
+		}
+
+		this.proximityTest();
 	}
 
 	move(verticalMoveDiff, horizontalMoveDiff) {
@@ -109,7 +124,6 @@ export class DivWrapper {
 		}
 
 		this.proximityTest();
-
 	}
 
 	proximityTest() {
