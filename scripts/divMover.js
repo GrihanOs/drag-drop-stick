@@ -7,6 +7,8 @@ const directionKeys = {
 	RIGHT: "ArrowRight",
 }
 
+const activeKeys = {}
+
 let verticalMove = false;
 let verticalMoveDiff = 0;
 
@@ -46,6 +48,8 @@ function initialize() {
 
 function moveStart(directionKey) {
 
+	activeKeys[directionKey] = true;
+
 	if (directionKey === directionKeys.UP ||
 		directionKey === directionKeys.DOWN) {
 
@@ -80,23 +84,27 @@ function moveStart(directionKey) {
 
 function moveStop(directionKey) {
 
-	if (directionKey === directionKeys.UP ||
-		directionKey === directionKeys.DOWN) {
+	activeKeys[directionKey] = false;
 
+	if (!activeKeys[directionKeys.UP] && !activeKeys[directionKeys.DOWN]) {
 		verticalMove = false;
 		verticalMoveDiff = 0;
-
+	} else if (directionKey === directionKeys.UP) {
+		moveStart(directionKeys.DOWN);
+	} else if (directionKey === directionKeys.DOWN) {
+		moveStart(directionKeys.UP);
 	}
 
-	if (directionKey === directionKeys.LEFT ||
-		directionKey === directionKeys.RIGHT) {
-
+	if (!activeKeys[directionKeys.LEFT] && !activeKeys[directionKeys.RIGHT]) {
 		horizontalMove = false;
 		horizontalMoveDiff = 0;
-
+	} else if (directionKey === directionKeys.LEFT) {
+		moveStart(directionKeys.RIGHT);
+	} else if (directionKey === directionKeys.RIGHT) {
+		moveStart(directionKeys.LEFT);
 	}
 
-	animationRunning = false;
+	animationRunning = verticalMove || horizontalMove;
 }
 
 function doMove() {
@@ -114,5 +122,3 @@ function doMove() {
 }
 
 window.addEventListener("load", initialize);
-
-// export default initialize;
