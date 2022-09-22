@@ -24,13 +24,8 @@ export class DivWrapper {
 		this.selectorInput = divReference.querySelector(".movable-div-selector");
 
 		this.divActivatedListener = this.divActivated.bind(this);
-		this.selectorInput.addEventListener("change", this.divActivatedListener);
-
 		this.draggingStartListener = this.draggingStart.bind(this);
-		this.divReference.addEventListener("mousedown", this.draggingStartListener);
-
 		this.draggingEndListener = this.draggingEnd.bind(this);
-		this.divReference.addEventListener("mouseup", this.draggingEndListener);
 
 		this.resetProximity();
 

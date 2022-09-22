@@ -59,7 +59,15 @@ function initialize() {
 	});
 
 	document.querySelectorAll(".movable-div").forEach((div) => {
-		divWrappers.push(new DivWrapper(div));
+
+		const divWrapper = new DivWrapper(div);
+
+		divWrapper.divReference.addEventListener("mousedown", divWrapper.draggingStartListener);
+		divWrapper.divReference.addEventListener("mouseup", divWrapper.draggingEndListener);
+
+		divWrapper.selectorInput.addEventListener("change", divWrapper.divActivatedListener);
+
+		divWrappers.push(divWrapper);
 	});
 }
 
