@@ -141,29 +141,32 @@ export class DivWrapper {
 
 				if (intersectsHotizontal) {
 
-					if (logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
+					if (!this.proximity.vertical && logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
 						this.proximity.top = true;
 						this.actualPos.top -= logicalTop - divWrapper.bottom;
 					}
 
-					if (divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
+					if (!this.proximity.vertical && divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
 						this.proximity.bottom = true;
 						this.actualPos.top += divWrapper.top - logicalBottom;
 					}
 
+					this.proximity.vertical = this.proximity.top || this.proximity.bottom;
 				}
 
 				if (intersectsVertical) {
 
-					if (logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
+					if (!this.proximity.horizontal && logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
 						this.proximity.left = true;
 						this.actualPos.left -= logicalLeft - divWrapper.right;
 					}
 
-					if (divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
+					if (!this.proximity.horizontal && divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
 						this.proximity.right = true;
 						this.actualPos.left += divWrapper.left - logicalRight;
 					}
+
+					this.proximity.horizontal = this.proximity.left || this.proximity.right;
 				}
 			}
 		})
