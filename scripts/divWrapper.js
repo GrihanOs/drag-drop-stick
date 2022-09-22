@@ -95,7 +95,7 @@ export class DivWrapper {
 		if (newLeft > SCREEN_BEZEL && newLeft + this.logicalPos.width < window.visualViewport.width - SCREEN_BEZEL) {
 			this.actualPos.left = newLeft;
 		}
-		
+
 		this.logicalPos.top = newTop;
 
 		if (newTop > SCREEN_BEZEL && newTop + this.logicalPos.height < window.visualViewport.height - SCREEN_BEZEL) {
@@ -141,50 +141,32 @@ export class DivWrapper {
 
 				if (intersectsHotizontal) {
 
-					if (!this.proximity.vertical) {
-						if (logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
-							this.proximity.top = true;
-							this.actualPos.top -= logicalTop - divWrapper.bottom;
-						}
+					if (logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
+						this.proximity.top = true;
+						this.actualPos.top -= logicalTop - divWrapper.bottom;
 					}
 
-					if (!this.proximity.vertical) {
-						if (divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
-							this.proximity.bottom = true;
-							this.actualPos.top += divWrapper.top - logicalBottom;
-						}
+					if (divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
+						this.proximity.bottom = true;
+						this.actualPos.top += divWrapper.top - logicalBottom;
 					}
-
-
-
-					this.proximity.top = this.proximity.top || logicalTop - divWrapper.bottom > 0 && logicalTop - divWrapper.bottom <= PROX_DISTANCE;
-					this.proximity.bottom = this.proximity.bottom || divWrapper.top - logicalBottom > 0 && divWrapper.top - logicalBottom <= PROX_DISTANCE;
 
 				}
 
 				if (intersectsVertical) {
 
-					this.proximity.left = this.proximity.left || logicalLeft - divWrapper.right > 0 && logicalLeft - divWrapper.right <= PROX_DISTANCE;
-					this.proximity.right = this.proximity.right || divWrapper.left - logicalRight > 0 && divWrapper.left - logicalRight <= PROX_DISTANCE;
-
-					if (!this.proximity.horizontal) {
-						if (logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
-							this.proximity.left = true;
-							this.actualPos.left -= logicalLeft - divWrapper.right;
-						}
+					if (logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
+						this.proximity.left = true;
+						this.actualPos.left -= logicalLeft - divWrapper.right;
 					}
 
-					if (!this.proximity.horizontal) {
-						if (divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
-							this.proximity.right = true;
-							this.actualPos.left += divWrapper.left - logicalRight;
-						}
+					if (divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
+						this.proximity.right = true;
+						this.actualPos.left += divWrapper.left - logicalRight;
 					}
 				}
-
 			}
 		})
-
 	}
 
 	renderClass(test, className) {
