@@ -95,14 +95,16 @@ export class DivWrapper {
 		const newLeft = this.logicalPos.left + movementX;
 		const newTop = this.logicalPos.top + movementY;
 
+		this.logicalPos.left = newLeft;
+
 		if (newLeft > SCREEN_BEZEL && newLeft + this.logicalPos.width < window.visualViewport.width - SCREEN_BEZEL) {
-			this.logicalPos.left = newLeft;
 			this.actualPos.left = newLeft;
 		}
+		
+		this.logicalPos.top = newTop;
 
 		if (newTop > SCREEN_BEZEL && newTop + this.logicalPos.height < window.visualViewport.height - SCREEN_BEZEL) {
 			this.actualPos.top = newTop;
-			this.logicalPos.top = newTop;
 		}
 
 		this.proximityTest();
