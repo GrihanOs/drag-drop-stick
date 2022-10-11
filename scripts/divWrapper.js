@@ -177,27 +177,30 @@ export class DivWrapper {
 					(divWrapper.left - logicalRight <= PROX_DISTANCE));
 
 				if (intersectsHotizontal) {
-					if (topClose) {
+					if (!this.proximity.vertical && topClose) {
 						this.proximity.top = true;
 						this.actualPos.top -= logicalTop - divWrapper.bottom;
 					}
 
-					if (bottomClose) {
+					if (!this.proximity.vertical & bottomClose) {
 						this.proximity.bottom = true;
 						this.actualPos.top += divWrapper.top - logicalBottom;
 					}
 				}
 
 				if (intersectsVertical) {
-					if (leftClose) {
+					if (!this.proximity.horizontal && leftClose) {
 						this.proximity.left = true;
 						this.actualPos.left -= logicalLeft - divWrapper.right;
 					}
-					if (rightClose) {
+					if (!this.proximity.horizontal && rightClose) {
 						this.proximity.right = true;
 						this.actualPos.left += divWrapper.left - logicalRight;
 					}
 				}
+
+				this.proximity.vertical = this.proximity.top || this.proximity.bottom;
+				this.proximity.horizontal = this.proximity.left || this.proximity.right;
 			}
 		})
 	}
