@@ -161,21 +161,26 @@ export class DivWrapper {
 
 			if (divWrapper.id !== this.id) {
 
+				// Detect intersection between elements.
 				const intersectsVertical = ((logicalTop >= divWrapper.top && logicalTop <= divWrapper.bottom) || 
 					(divWrapper.top >= logicalTop && divWrapper.top <= logicalBottom));
 				const intersectsHotizontal = ((logicalLeft >= divWrapper.left && logicalLeft <= divWrapper.right) || 
 					(divWrapper.left >= logicalLeft && divWrapper.left <= logicalRight));
 
+				// Detect vertical proximity.
 				const topClose = ((!this.proximity.vertical && logicalTop - divWrapper.bottom > -PROX_DISTANCE) && 
 					(logicalTop - divWrapper.bottom <= PROX_DISTANCE));
 				const bottomClose = ((!this.proximity.vertical && divWrapper.top - logicalBottom > -PROX_DISTANCE) && 
 					(divWrapper.top - logicalBottom <= PROX_DISTANCE));
 
+				// Detect horizontal proximity.
 				const leftClose = ((!this.proximity.horizontal && logicalLeft - divWrapper.right > -PROX_DISTANCE) && 
 					(logicalLeft - divWrapper.right <= PROX_DISTANCE));
 				const rightClose = ((!this.proximity.horizontal && divWrapper.left - logicalRight > -PROX_DISTANCE) && 
 					(divWrapper.left - logicalRight <= PROX_DISTANCE));
 
+				// Check for vertical snap:
+				// Horizontal intersect, and vertical proximity.
 				if (intersectsHotizontal) {
 					if (!this.proximity.vertical && topClose) {
 						this.proximity.top = true;
@@ -188,6 +193,8 @@ export class DivWrapper {
 					}
 				}
 
+				// Check for horizontal snap:
+				// Vertical intersect, and horizontal proximity.
 				if (intersectsVertical) {
 					if (!this.proximity.horizontal && leftClose) {
 						this.proximity.left = true;
@@ -199,6 +206,36 @@ export class DivWrapper {
 					}
 				}
 
+				// Check for corner snap if no side snap and no intersect detect.
+				if (!(this.proximity.top || this.proximity.bottom || this.proximity.left || this.proximity.right) && 
+					!(intersectsVertical || intersectsHotizontal) && 
+					!(this.proximity.vertical || this.proximity.horizontal)) {
+
+					if (leftClose && topClose) {
+						this.proximity.top = true;
+						this.actualPos.top -= logicalTop - divWrapper.bottom;
+						this.proximity.left = true;
+						this.actualPos.left -= logicalLeft - divWrapper.right;
+					} else if (leftClose && bottomClose) {
+						this.proximity.bottom = true;
+						this.actualPos.top += divWrapper.top - logicalBottom;
+						this.proximity.left = true;
+						this.actualPos.left -= logicalLeft - divWrapper.right;
+					} else if (rightClose && topClose) {
+						this.proximity.top = true;
+						this.actualPos.top -= logicalTop - divWrapper.bottom;
+						this.proximity.right = true;
+						this.actualPos.left += divWrapper.left - logicalRight;
+					} else if (rightClose && bottomClose) {
+						this.proximity.bottom = true;
+						this.actualPos.top += divWrapper.top - logicalBottom;
+						this.proximity.right = true;
+						this.actualPos.left += divWrapper.left - logicalRight;
+					}
+
+				}
+
+				// Check every direction (vertical/horizontal) only until the first detection.
 				this.proximity.vertical = this.proximity.top || this.proximity.bottom;
 				this.proximity.horizontal = this.proximity.left || this.proximity.right;
 			}
