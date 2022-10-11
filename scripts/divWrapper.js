@@ -153,37 +153,42 @@ export class DivWrapper {
 
 			if (divWrapper.id !== this.id) {
 
-				const intersectsVertical = ((logicalTop >= divWrapper.top && logicalTop <= divWrapper.bottom) || (divWrapper.top >= logicalTop && divWrapper.top <= logicalBottom));
-				const intersectsHotizontal = ((logicalLeft >= divWrapper.left && logicalLeft <= divWrapper.right) || (divWrapper.left >= logicalLeft && divWrapper.left <= logicalRight));
+				const intersectsVertical = ((logicalTop >= divWrapper.top && logicalTop <= divWrapper.bottom) || 
+					(divWrapper.top >= logicalTop && divWrapper.top <= logicalBottom));
+				const intersectsHotizontal = ((logicalLeft >= divWrapper.left && logicalLeft <= divWrapper.right) || 
+					(divWrapper.left >= logicalLeft && divWrapper.left <= logicalRight));
+
+				const topClose = ((!this.proximity.vertical && logicalTop - divWrapper.bottom > -PROX_DISTANCE) && 
+					(logicalTop - divWrapper.bottom <= PROX_DISTANCE));
+				const bottomClose = ((!this.proximity.vertical && divWrapper.top - logicalBottom > -PROX_DISTANCE) && 
+					(divWrapper.top - logicalBottom <= PROX_DISTANCE));
+
+				const leftClose = ((!this.proximity.horizontal && logicalLeft - divWrapper.right > -PROX_DISTANCE) && 
+					(logicalLeft - divWrapper.right <= PROX_DISTANCE));
+				const rightClose = ((!this.proximity.horizontal && divWrapper.left - logicalRight > -PROX_DISTANCE) && 
+					(divWrapper.left - logicalRight <= PROX_DISTANCE));
 
 				if (intersectsHotizontal) {
-
-					if (!this.proximity.vertical && logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
+					if (topClose) {
 						this.proximity.top = true;
 						this.actualPos.top -= logicalTop - divWrapper.bottom;
 					}
 
-					if (!this.proximity.vertical && divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
+					if (bottomClose) {
 						this.proximity.bottom = true;
 						this.actualPos.top += divWrapper.top - logicalBottom;
 					}
-
-					this.proximity.vertical = this.proximity.top || this.proximity.bottom;
 				}
 
 				if (intersectsVertical) {
-
-					if (!this.proximity.horizontal && logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
+					if (leftClose) {
 						this.proximity.left = true;
 						this.actualPos.left -= logicalLeft - divWrapper.right;
 					}
-
-					if (!this.proximity.horizontal && divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
+					if (rightClose) {
 						this.proximity.right = true;
 						this.actualPos.left += divWrapper.left - logicalRight;
 					}
-
-					this.proximity.horizontal = this.proximity.left || this.proximity.right;
 				}
 			}
 		})
