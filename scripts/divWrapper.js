@@ -24,13 +24,8 @@ export class DivWrapper {
 		this.selectorInput = divReference.querySelector(".movable-div-selector");
 
 		this.divActivatedListener = this.divActivated.bind(this);
-		this.selectorInput.addEventListener("change", this.divActivatedListener);
-
 		this.draggingStartListener = this.draggingStart.bind(this);
-		this.divReference.addEventListener("mousedown", this.draggingStartListener);
-
 		this.draggingEndListener = this.draggingEnd.bind(this);
-		this.divReference.addEventListener("mouseup", this.draggingEndListener);
 
 		this.resetProximity();
 
@@ -96,12 +91,16 @@ export class DivWrapper {
 		const newTop = this.logicalPos.top + movementY;
 
 		this.logicalPos.left = newLeft;
-		this.actualPos.left = newLeft;
 
-		this.actualPos.top = newTop;
+		if (newLeft > SCREEN_BEZEL && newLeft + this.logicalPos.width < window.visualViewport.width - SCREEN_BEZEL) {
+			this.actualPos.left = newLeft;
+		}
+
 		this.logicalPos.top = newTop;
 
-		this.draggingBezelTest();
+		if (newTop > SCREEN_BEZEL && newTop + this.logicalPos.height < window.visualViewport.height - SCREEN_BEZEL) {
+			this.actualPos.top = newTop;
+		}
 
 		this.proximityTest();
 	}
@@ -159,50 +158,35 @@ export class DivWrapper {
 
 				if (intersectsHotizontal) {
 
-					if (!this.proximity.vertical) {
-						if (logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
-							this.proximity.top = true;
-							this.actualPos.top -= logicalTop - divWrapper.bottom;
-						}
+					if (!this.proximity.vertical && logicalTop - divWrapper.bottom > -PROX_DISTANCE && logicalTop - divWrapper.bottom <= PROX_DISTANCE) {
+						this.proximity.top = true;
+						this.actualPos.top -= logicalTop - divWrapper.bottom;
 					}
 
-					if (!this.proximity.vertical) {
-						if (divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
-							this.proximity.bottom = true;
-							this.actualPos.top += divWrapper.top - logicalBottom;
-						}
+					if (!this.proximity.vertical && divWrapper.top - logicalBottom > -PROX_DISTANCE && divWrapper.top - logicalBottom <= PROX_DISTANCE) {
+						this.proximity.bottom = true;
+						this.actualPos.top += divWrapper.top - logicalBottom;
 					}
 
-
-
-					this.proximity.top = this.proximity.top || logicalTop - divWrapper.bottom > 0 && logicalTop - divWrapper.bottom <= PROX_DISTANCE;
-					this.proximity.bottom = this.proximity.bottom || divWrapper.top - logicalBottom > 0 && divWrapper.top - logicalBottom <= PROX_DISTANCE;
-
+					this.proximity.vertical = this.proximity.top || this.proximity.bottom;
 				}
 
 				if (intersectsVertical) {
 
-					this.proximity.left = this.proximity.left || logicalLeft - divWrapper.right > 0 && logicalLeft - divWrapper.right <= PROX_DISTANCE;
-					this.proximity.right = this.proximity.right || divWrapper.left - logicalRight > 0 && divWrapper.left - logicalRight <= PROX_DISTANCE;
-
-					if (!this.proximity.horizontal) {
-						if (logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
-							this.proximity.left = true;
-							this.actualPos.left -= logicalLeft - divWrapper.right;
-						}
+					if (!this.proximity.horizontal && logicalLeft - divWrapper.right > -PROX_DISTANCE && logicalLeft - divWrapper.right <= PROX_DISTANCE) {
+						this.proximity.left = true;
+						this.actualPos.left -= logicalLeft - divWrapper.right;
 					}
 
-					if (!this.proximity.horizontal) {
-						if (divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
-							this.proximity.right = true;
-							this.actualPos.left += divWrapper.left - logicalRight;
-						}
+					if (!this.proximity.horizontal && divWrapper.left - logicalRight > -PROX_DISTANCE && divWrapper.left - logicalRight <= PROX_DISTANCE) {
+						this.proximity.right = true;
+						this.actualPos.left += divWrapper.left - logicalRight;
 					}
+
+					this.proximity.horizontal = this.proximity.left || this.proximity.right;
 				}
-
 			}
 		})
-
 	}
 
 	renderClass(test, className) {
