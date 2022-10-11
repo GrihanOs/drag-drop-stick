@@ -95,14 +95,21 @@ export class DivWrapper {
 
 		if (newLeft > SCREEN_BEZEL && newLeft + this.logicalPos.width < window.visualViewport.width - SCREEN_BEZEL) {
 			this.actualPos.left = newLeft;
+		} else if (newLeft <= SCREEN_BEZEL) {
+			this.actualPos.left = SCREEN_BEZEL;
+		} else if (newLeft + this.logicalPos.width >= window.visualViewport.width - SCREEN_BEZEL) {
+			this.actualPos.left = window.visualViewport.width - SCREEN_BEZEL - this.logicalPos.width;
 		}
 
 		this.logicalPos.top = newTop;
 
 		if (newTop > SCREEN_BEZEL && newTop + this.logicalPos.height < window.visualViewport.height - SCREEN_BEZEL) {
 			this.actualPos.top = newTop;
+		} else if (newTop <= SCREEN_BEZEL) {
+			this.actualPos.top = SCREEN_BEZEL;
+		} else if (newTop + this.logicalPos.height >= window.visualViewport.height - SCREEN_BEZEL) {
+			this.actualPos.top = window.visualViewport.height - SCREEN_BEZEL - this.logicalPos.height;
 		}
-
 		this.proximityTest();
 	}
 
