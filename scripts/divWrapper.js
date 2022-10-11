@@ -80,6 +80,7 @@ export class DivWrapper {
 	draggingEnd() {
 		if (DivWrapper.draggedDiv) {
 			DivWrapper.draggedDiv.resetProximity();
+			DivWrapper.draggedDiv.logicalPos = {...DivWrapper.draggedDiv.actualPos};
 			DivWrapper.draggedDiv.render();
 			DivWrapper.draggedDiv = null;
 		}
