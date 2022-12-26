@@ -58,6 +58,35 @@ function initialize() {
 		return (false);
 	});
 
+	const colors = ["lightcoral", "lightskyblue", "plum", "NavajoWhite"];
+
+	colors.forEach((color, index) => {
+
+		const div = document.createElement("div");
+
+		div.id = "moved-" + index;
+
+		div.classList.add("movable-div");
+		div.draggable = false;
+
+		div.style.backgroundColor = color;
+		div.style.top = 100 + 200 * index;
+		div.style.left = 150 + 250 * index;
+
+		const activationInput = document.createElement("input");
+		activationInput.type = "radio";
+		activationInput.id = "moved-" + index + "-select";
+		activationInput.name = "div-select";
+		activationInput.value = "moved-" + index;
+		activationInput.checked = index === 0;
+		activationInput.classList.add("movable-div-selector");
+		activationInput.draggable = "false";
+
+		div.appendChild(activationInput);
+
+		document.getElementsByClassName("container").item(0).appendChild(div);
+	})
+
 	document.querySelectorAll(".movable-div").forEach((div) => {
 
 		const divWrapper = new DivWrapper(div);

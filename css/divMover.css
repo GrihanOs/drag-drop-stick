@@ -14,24 +14,6 @@
 	box-sizing: border-box;
 }
 
-#moved-1 {
-    left: 600px;
-    top: 600px;
-    background-color: lightcoral;
-}
-
-#moved-2 {
-    left: 1000px;
-    top: 200px;
-    background-color: lightskyblue;
-}
-
-#moved-3 {
-    left: 800px;
-    top: 850px;
-    background-color: plum;
-}
-
 .proximity-div-top {
 	border-top: 5px solid yellow;
 }
