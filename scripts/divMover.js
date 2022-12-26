@@ -73,6 +73,9 @@ function initialize() {
 		div.style.top = 100 + 200 * index;
 		div.style.left = 150 + 250 * index;
 
+		div.style.height = 100 + (index * 10);
+		div.style.width = 300 + (index * 30);
+
 		const activationInput = document.createElement("input");
 		activationInput.type = "radio";
 		activationInput.id = "moved-" + index + "-select";

@@ -8,8 +8,6 @@
 }
 
 .movable-div {
-    width: 300px;
-    height: 100px;
     position: absolute;
 	box-sizing: border-box;
 }
